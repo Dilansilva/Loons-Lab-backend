@@ -9,6 +9,8 @@ const MongoClient = mongodb.MongoClient;//initialize the connection
 const connectionURL = 'mongodb://127.0.0.1:27017';//database server connection
 const databaseName = 'Loons-Lab';//Database name
 
+const NodeMailer = require('./src/NodeMailer');//import nodemailer
+
 app.use(express.json());//json parser
 
 app.post('/login', (req, res) => {
@@ -56,8 +58,8 @@ app.post('/signup', async (req, res) => {
    }
 });
 
-app.post('/emailverify',(req,res) => {//email verification route
-    
+app.post('/emailverify',async (req,res) => {//email verification route
+
 });
 
 app.listen(port, () => {
