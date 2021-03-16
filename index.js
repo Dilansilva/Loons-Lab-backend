@@ -57,7 +57,7 @@ app.post('/signup', async (req, res) => {
 });
 
 app.post('/emailverify',(req,res) => {//email verification route
-
+    
 });
 
 app.listen(port, () => {
