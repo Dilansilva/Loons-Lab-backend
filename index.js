@@ -108,13 +108,19 @@ app.post('/emailverify',async (req,res) => {//email verification route
             const verificationCode = Math.floor((Math.random() * 100000) + 1);//genarate a random number
             verifyCode = verificationCode;
             main.main(req.body.email,verificationCode);//email sender
-            res.send('succefully send email');
+            res.send({
+                message : "send email"
+            });
             
         } if(req.body.code){//if code is send
             if(verifyCode == req.body.code){//when code is verify succefully
-                res.send('verify code!');
+                res.send({
+                    message : "verify code"
+                });
             } else {//when code is wrong
-                res.send('Wrong code!');
+                res.send({
+                    message : "wrong code"
+                });
             }
         }
     } catch (error) {
