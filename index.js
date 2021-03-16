@@ -107,6 +107,10 @@ app.post('/emailverify',async (req,res) => {//email verification route
     }
 });
 
+app.get('/colombo',(req,res) => {
+    
+});
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
