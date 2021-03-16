@@ -17,7 +17,7 @@ app.post('/login', (req, res) => {
 })
 
 app.post('/signup', async (req, res) => {
-
+   
    try {
         //salt and hashed the password
         const salt = await bcrypt.genSalt(10);//generate a 10 salt
@@ -51,9 +51,13 @@ app.post('/signup', async (req, res) => {
                     }
                 })
         })
-   } catch (error) {
+   } catch (error) {//if the error occur
     res.status(500).send();
    }
+});
+
+app.post('/emailverify',(req,res) => {//email verification route
+
 });
 
 app.listen(port, () => {
