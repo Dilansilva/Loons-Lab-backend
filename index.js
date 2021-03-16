@@ -1,4 +1,4 @@
-const express = require('express')
+const express = require('express');
 const app = express();
 const port = 4000;//port
 
@@ -108,11 +108,27 @@ app.post('/emailverify',async (req,res) => {//email verification route
     }
 });
 
-app.get('/colombo',(req,res) => {
+app.get('/colombo',async (req,res) => {
+   try {
     const url = 'https://api.openweathermap.org/data/2.5/onecall?lat=6.927079&lon=79.861244&exclude=current&appid=5c301eacf55ba92acebe2c2d52aebe38';
     request({url:url,json : true}, function (error, response, body) {
-    console.log(body.hourly[0].weather); // Print the HTML for the Google homepage.
+        if(error){
+            res.status(500).send();
+        } if(body){
+            res.status(200).send(body.hourly[0]);
+        }
+    });
+    } catch (error) {
+        res.status(500).send();
+    }
 });
+
+app.get('/forcats',async (req,res) => {
+    try {
+        
+    } catch (error) {   
+        res.status(500).send();
+    }
 });
 
 app.listen(port, () => {
