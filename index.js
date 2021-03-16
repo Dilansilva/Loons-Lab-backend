@@ -125,7 +125,14 @@ app.get('/colombo',async (req,res) => {
 
 app.get('/forcats',async (req,res) => {
     try {
-        
+        const url = 'api.openweathermap.org/data/2.5/forecast/daily?lat=' + req.body.latitude +'&lon='+ req.body.longitude +'&cnt='+ req.body.days+'&appid=5c301eacf55ba92acebe2c2d52aebe38';
+        request({url:url,json : true}, function (error, response, body) {
+        if(error){
+            res.status(500).send();
+        } if(body){
+            res.status(200).send(body);
+        }
+    });
     } catch (error) {   
         res.status(500).send();
     }
