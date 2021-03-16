@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer");
+const Mail = require("nodemailer/lib/mailer");
 
 // async..await is not allowed in global scope, must use a wrapper
 function main(email,code) {

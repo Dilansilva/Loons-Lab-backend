@@ -11,6 +11,8 @@ const databaseName = 'Loons-Lab';//Database name
 
 const main = require('./src/NodeMailer');//import nodemailer
 
+let verifyCode = '';    
+
 app.use(express.json());//json parser
 
 app.post('/login', (req, res) => {
@@ -59,24 +61,23 @@ app.post('/signup', async (req, res) => {
 });
 
 app.post('/emailverify',async (req,res) => {//email verification route
+    
     try {
-       
         if(req.body.email){
-            
             const verificationCode = Math.floor((Math.random() * 100000) + 1);//genarate a random number
-            
-            NodeMailer.NodeMailer(req.body.email,verificationCode);//email sender
+            verifyCode = verificationCode;
+            main.main(req.body.email,verificationCode);//email sender
             res.send('succefully send email');
             
         } if(req.body.code){//if code is send
-            if(verificationCode == req.body.code){
+            if(verifyCode == req.body.code){//when code is verify succefully
                 res.send('verify code!');
-            } else {
+            } else {//when code is wrong
                 res.send('Wrong code!');
             }
         }
     } catch (error) {
-        
+        res.status(500).send();
     }
 });
 
