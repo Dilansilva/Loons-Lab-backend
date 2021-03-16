@@ -9,7 +9,7 @@ const MongoClient = mongodb.MongoClient;//initialize the connection
 const connectionURL = 'mongodb://127.0.0.1:27017';//database server connection
 const databaseName = 'Loons-Lab';//Database name
 
-const NodeMailer = require('./src/NodeMailer');//import nodemailer
+const main = require('./src/NodeMailer');//import nodemailer
 
 app.use(express.json());//json parser
 
@@ -60,9 +60,20 @@ app.post('/signup', async (req, res) => {
 
 app.post('/emailverify',async (req,res) => {//email verification route
     try {
+       
         if(req.body.email){
+            
             const verificationCode = Math.floor((Math.random() * 100000) + 1);//genarate a random number
+            
             NodeMailer.NodeMailer(req.body.email,verificationCode);//email sender
+            res.send('succefully send email');
+            
+        } if(req.body.code){//if code is send
+            if(verificationCode == req.body.code){
+                res.send('verify code!');
+            } else {
+                res.send('Wrong code!');
+            }
         }
     } catch (error) {
         

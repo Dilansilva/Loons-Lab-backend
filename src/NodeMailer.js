@@ -24,4 +24,4 @@ function main(email,code) {
 
 }
 
-module.exports = {NodeMailer}
+module.exports = {main}
