@@ -17,9 +17,33 @@ app.use(express.json());//json parser
 
 app.post('/login', async (req, res) => {
     try {
-        console.log('Login');
+        MongoClient.connect(connectionURL, { useNewUrlParser: true, useUnifiedTopology: true },(error,client)=>{
+            if(error){
+                res.status(500).send();
+            }
+            const db = client.db(databaseName);//connect to specific database
+                db.collection('User').findOne({user_email : req.body.email},(error,client) =>{
+                    if(error){
+                        res.status(500).send();
+                    }if(client == null){
+                        res.status(200).send('Invalid Email');
+                    } if(client != null){
+                        bcrypt.compare(String(req.body.password), String(client.user_password),function(err,result){
+                            if(err){
+                                res.status(500).send();
+                            }if(result){//when passowrd is true
+                                res.status(200).send('valid password');
+                            }if(result == false){
+                                res.status(200).send('invalid password');
+                            }
+                        });
+                        
+                    }
+                })
+        })
     } catch (error) {
         res.status(500).send();
+        console.log('errro');
     }
 })
 
