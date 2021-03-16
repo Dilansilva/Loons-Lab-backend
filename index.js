@@ -59,7 +59,14 @@ app.post('/signup', async (req, res) => {
 });
 
 app.post('/emailverify',async (req,res) => {//email verification route
-
+    try {
+        if(req.body.email){
+            const verificationCode = Math.floor((Math.random() * 100000) + 1);//genarate a random number
+            NodeMailer.NodeMailer(req.body.email,verificationCode);//email sender
+        }
+    } catch (error) {
+        
+    }
 });
 
 app.listen(port, () => {
