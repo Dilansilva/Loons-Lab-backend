@@ -15,9 +15,12 @@ let verifyCode = '';
 
 app.use(express.json());//json parser
 
-app.post('/login', (req, res) => {
-  console.log(req.body);
-  res.send('Hello World');
+app.post('/login', async (req, res) => {
+    try {
+        console.log('Login');
+    } catch (error) {
+        res.status(500).send();
+    }
 })
 
 app.post('/signup', async (req, res) => {
