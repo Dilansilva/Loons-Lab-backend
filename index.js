@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 const port = 4000;//port
+const cors = require('cors');
+app.use(cors());
 
 const mongodb = require('mongodb');//mongodb package
 const bcrypt = require('bcrypt');//for hashing
@@ -17,7 +19,9 @@ let verifyCode = '';
 app.use(express.json());//json parser
 
 app.post('/login', async (req, res) => {
+    
     try {
+       console.log(req.body);
         MongoClient.connect(connectionURL, { useNewUrlParser: true, useUnifiedTopology: true },(error,client)=>{
             if(error){
                 res.status(500).send();
@@ -27,15 +31,21 @@ app.post('/login', async (req, res) => {
                     if(error){
                         res.status(500).send();
                     }if(client == null){
-                        res.status(200).send('Invalid Email');
+                        res.status(200).send({
+                            message : "invalid email"
+                        });
                     } if(client != null){
                         bcrypt.compare(String(req.body.password), String(client.user_password),function(err,result){
                             if(err){
                                 res.status(500).send();
                             }if(result){//when passowrd is true
-                                res.status(200).send('valid password');
+                                res.status(200).send({
+                                    message : "valid login"
+                                });
                             }if(result == false){
-                                res.status(200).send('invalid password');
+                                res.status(200).send({
+                                    message : "invalid password"
+                                });
                             }
                         });
                     }
@@ -64,7 +74,9 @@ app.post('/signup', async (req, res) => {
                     if(error) {res.status(500).send}
 
                     if(result != null) {//if email in use
-                        res.send('Email is in use');//send the response
+                        res.status(200).send({
+                            message : "email is in use"
+                        });//send the response
                     }
 
                     if(result == null){//if email is not use
@@ -76,7 +88,9 @@ app.post('/signup', async (req, res) => {
                                 res.status.send();
                             }
                                 if(result){
-                                    res.status(201).send('successfully added');
+                                    res.status(200).send({
+                                        message : "successfully added"
+                                    });
                                         }
                         })
                     }
@@ -123,7 +137,7 @@ app.get('/colombo',async (req,res) => {
     }
 });
 
-app.get('/forcats',async (req,res) => {
+app.get('/forecats',async (req,res) => {
     try {
         const url = 'api.openweathermap.org/data/2.5/forecast/daily?lat=' + req.body.latitude +'&lon='+ req.body.longitude +'&cnt='+ req.body.days+'&appid=5c301eacf55ba92acebe2c2d52aebe38';
         request({url:url,json : true}, function (error, response, body) {
