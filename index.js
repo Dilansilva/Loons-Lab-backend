@@ -37,7 +37,6 @@ app.post('/login', async (req, res) => {
                                 res.status(200).send('invalid password');
                             }
                         });
-                        
                     }
                 })
         })
@@ -75,9 +74,9 @@ app.post('/signup', async (req, res) => {
                             if(error){
                                 res.status.send();
                             }
-                            if(result){
-                                res.status(201).send('Successfully Added');
-                            }
+                                if(result){
+                                    res.status(201).send('successfully added');
+                                        }
                         })
                     }
                 })
