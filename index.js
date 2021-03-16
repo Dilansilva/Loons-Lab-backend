@@ -24,7 +24,32 @@ app.post('/signup', async (req, res) => {
         const hashedPassword = await bcrypt.hash(req.body.password, salt);//hash the password with salt
         
         MongoClient.connect(connectionURL, { useNewUrlParser: true, useUnifiedTopology: true }, (error,client) => {
-            
+            if(error){//if error occur
+                res.status(500).send();
+            } 
+
+            const db = client.db(databaseName);//connect to specific database
+                db.collection('User').findOne({user_email : req.body.email},(error,result) => {
+                    if(error) {res.status(500).send}
+
+                    if(result != null) {//if email in use
+                        res.send('Email is in use');//send the response
+                    }
+
+                    if(result == null){//if email is not use
+                        db.collection('User').insertOne({//insert the record after validation
+                            user_email : req.body.email,
+                            user_password : hashedPassword
+                        },(error, result) => {
+                            if(error){
+                                res.status.send();
+                            }
+                            if(result){
+                                res.status(201).send('Successfully Added');
+                            }
+                        })
+                    }
+                })
         })
    } catch (error) {
     res.status(500).send();
